@@ -1,0 +1,12 @@
+{
+  "name": "ppdm-capacity-planner",
+  "version": "1.0.0",
+  "description": "Claude Opus 4.7 capacity forecasting for Dell EMC PPDM storage systems",
+  "skills": [
+    {
+      "name": "plan-capacity",
+      "description": "Run PPDM capacity forecast — connects to PPDM, fetches storage data, generates breach projections and recommendations via Claude Opus 4.7",
+      "run": "python planner.py"
+    }
+  ]
+}
