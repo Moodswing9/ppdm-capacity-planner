@@ -4,7 +4,7 @@
 
 **AI capacity forecasting for Dell PowerProtect Data Manager (PPDM) storage, powered by Claude Opus 4.7**
 
-[![Version](https://img.shields.io/badge/version-1.0.1-6366f1?style=flat-square)](https://github.com/Moodswing9/ppdm-capacity-planner/releases)
+[![Version](https://img.shields.io/badge/version-1.0.2-6366f1?style=flat-square)](https://github.com/Moodswing9/ppdm-capacity-planner/releases)
 [![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/Moodswing9/ppdm-capacity-planner/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Moodswing9/ppdm-capacity-planner/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%2B-3b82f6?style=flat-square)](#requirements)
@@ -89,7 +89,18 @@ Everything lives in a single file, `planner.py`.
 
 ## Claude Code plugin
 
-The repo includes a Claude Code plugin manifest (`.claude-plugin/plugin.json`) with a `plan-capacity` skill that runs the planner from inside Claude Code.
+Install the plugin to get a `plan-capacity` skill that runs the planner from inside Claude Code. Ask for a capacity forecast, or for demo mode, and Claude runs it for you.
+
+From a terminal:
+
+```bash
+claude plugin marketplace add Moodswing9/claude-plugins
+claude plugin install ppdm-capacity-planner@moodswing9
+```
+
+Or inside Claude Code: `/plugin marketplace add Moodswing9/claude-plugins`, then `/plugin install ppdm-capacity-planner@moodswing9`.
+
+Only need the knowledge skill, without the slash commands? `npx skills add Moodswing9/ppdm-capacity-planner -g` installs just the skill.
 
 ---
 

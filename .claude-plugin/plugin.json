@@ -1,12 +1,20 @@
 {
+  "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "ppdm-capacity-planner",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Claude Opus 4.7 capacity forecasting for Dell EMC PPDM storage systems",
-  "skills": [
-    {
-      "name": "plan-capacity",
-      "description": "Run PPDM capacity forecast — connects to PPDM, fetches storage data, generates breach projections and recommendations via Claude Opus 4.7",
-      "run": "python planner.py"
-    }
-  ]
+  "author": {
+    "name": "Moodswing9",
+    "url": "https://github.com/Moodswing9"
+  },
+  "keywords": [
+    "dell-emc",
+    "ppdm",
+    "capacity-planning",
+    "forecasting",
+    "claude-skill"
+  ],
+  "repository": "https://github.com/Moodswing9/ppdm-capacity-planner",
+  "license": "MIT",
+  "homepage": "https://github.com/Moodswing9/ppdm-capacity-planner"
 }
