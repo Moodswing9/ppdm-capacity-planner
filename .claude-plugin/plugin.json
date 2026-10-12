@@ -1,6 +1,6 @@
 {
   "name": "ppdm-capacity-planner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Opus 4.7 capacity forecasting for Dell EMC PPDM storage systems",
   "skills": [
     {
