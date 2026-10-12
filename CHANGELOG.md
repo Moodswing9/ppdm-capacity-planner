@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2] — 2026-10-12
+### Fixed
+- Claude Code plugin manifest passes `claude plugin validate`: `repository` is a URL, `license` is MIT and the unsupported `components` field is gone; the invalid `skills` entry (a custom `run` field) is replaced by a real `plan-capacity` skill in `skills/plan-capacity/SKILL.md`
+- Install docs: the plugin is now installed from the Moodswing9 marketplace (`claude plugin marketplace add Moodswing9/claude-plugins`, then `claude plugin install ppdm-capacity-planner@moodswing9`). The previously documented `npx skills add` installs only the skill, not the slash commands
+
+### Added
+- CI validates the plugin manifest on every push and pull request
+
 ## [1.0.1] — 2026-10-12
 ### Added
 - CI runs the 13 tests on Python 3.11 and 3.12 for every push and pull request; they previously never ran on GitHub

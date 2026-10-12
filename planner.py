@@ -2,7 +2,7 @@
 """
 ppdm-capacity-planner — Claude Opus 4.7-powered storage capacity forecasting for PPDM.
 """
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 import argparse
 import os

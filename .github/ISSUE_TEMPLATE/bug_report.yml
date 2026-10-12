@@ -9,7 +9,7 @@ body:
     id: version
     attributes:
       label: ppdm-capacity-planner version
-      placeholder: e.g. 1.0.1 (shown at the top of the report)
+      placeholder: e.g. 1.0.2 (shown at the top of the report)
     validations:
       required: true
   - type: dropdown
