@@ -36,7 +36,7 @@ python planner.py --host ppdm.corp.example.com --user admin --pass MyPassword
 | `PPDM_PORT`        | PPDM HTTPS port                            | `8443`   |
 | `ANTHROPIC_API_KEY`| Anthropic API key for Claude Opus 4.7      | —        |
 
-Copy `.env.example` to `.env` and fill in your values. The tool reads all CLI flags from the environment if not passed on the command line.
+The tool reads these from the process environment when the matching CLI flag is not passed. It does **not** load `.env` files itself — `.env.example` only lists the variables; export them in the shell before running.
 
 ## CLI reference
 
