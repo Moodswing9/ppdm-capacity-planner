@@ -4,7 +4,7 @@
 
 **AI capacity forecasting for Dell PowerProtect Data Manager (PPDM) storage, powered by Claude Opus 4.7**
 
-[![Version](https://img.shields.io/badge/version-1.0.0-6366f1?style=flat-square)](https://github.com/Moodswing9/ppdm-capacity-planner/releases)
+[![Version](https://img.shields.io/badge/version-1.0.1-6366f1?style=flat-square)](https://github.com/Moodswing9/ppdm-capacity-planner/releases)
 [![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/Moodswing9/ppdm-capacity-planner/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/Moodswing9/ppdm-capacity-planner/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%2B-3b82f6?style=flat-square)](#requirements)
@@ -108,3 +108,7 @@ The tests don't call PPDM or the Anthropic API.
 
 - **Single snapshot.** Forecasts are estimated from one point-in-time reading. For more reliable projections, run the planner on a schedule and keep the history.
 - **TLS verification is disabled** for the PPDM connection, because PPDM servers commonly use self-signed certificates. Only use it on trusted internal networks.
+
+---
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to contribute and [CHANGELOG.md](CHANGELOG.md) for release history.
