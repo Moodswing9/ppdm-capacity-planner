@@ -1,10 +1,10 @@
 # ppdm-capacity-planner
 
-Claude Opus 4.7-powered storage capacity forecasting for Dell EMC PowerProtect Data Manager (PPDM).
+Claude Opus 5.5-powered storage capacity forecasting for Dell EMC PowerProtect Data Manager (PPDM).
 
 ## What it does
 
-`planner.py` connects to a live PPDM instance via its REST API, retrieves storage system utilisation data, then sends the snapshot to Claude Opus 4.7 which produces:
+`planner.py` connects to a live PPDM instance via its REST API, retrieves storage system utilisation data, then sends the snapshot to Claude Opus 5.5 which produces:
 
 - **80% capacity breach projections** per storage system
 - **95% capacity breach projections** per storage system (critical threshold)
@@ -34,7 +34,7 @@ python planner.py --host ppdm.corp.example.com --user admin --pass MyPassword
 | `PPDM_USER`        | PPDM admin username                        | —        |
 | `PPDM_PASS`        | PPDM admin password                        | —        |
 | `PPDM_PORT`        | PPDM HTTPS port                            | `8443`   |
-| `ANTHROPIC_API_KEY`| Anthropic API key for Claude Opus 4.7      | —        |
+| `ANTHROPIC_API_KEY`| Anthropic API key for Claude Opus 5.5      | —        |
 
 The tool reads these from the process environment when the matching CLI flag is not passed. It does **not** load `.env` files itself — `.env.example` only lists the variables; export them in the shell before running.
 
@@ -60,7 +60,7 @@ Single-file tool (`planner.py`). Key components:
 | `PPDMClient`         | REST client: login → Bearer token → GET storage-systems → logout |
 | `parse_storage_systems()` | Normalises raw PPDM API records to `{name, total_gib, used_gib, used_pct}` |
 | `build_prompt()`     | Constructs the Claude prompt from the storage snapshot |
-| `generate_forecast()`| Calls `anthropic.Anthropic().messages.create(model="claude-opus-4-7", ...)` |
+| `generate_forecast()`| Calls `anthropic.Anthropic().beta.messages.create(**REQUEST_SETTINGS, ...)`: `claude-opus-5-5`, `effort: "low"`, `max_tokens` 8000, refusal fallback on |
 | `print_report()`     | Renders ASCII utilisation bars + Claude narrative to stdout |
 
 ## Running tests
@@ -73,4 +73,4 @@ python -m pytest tests/ -v
 ## Notes
 
 - TLS certificate verification is disabled for PPDM connections (self-signed certs are common). Do not disable this in production internet-facing environments.
-- Claude Opus 4.7 generates estimates from a single snapshot. For accurate projections, feed historical data by scheduling the tool daily and storing trends.
+- Claude Opus 5.5 generates estimates from a single snapshot. For accurate projections, feed historical data by scheduling the tool daily and storing trends.

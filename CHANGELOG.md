@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0] — 2026-11-10
+### Fixed
+- Forecasts were cut off: Claude Opus 4.7 hit the 1024-token limit before the Executive Summary (section 4 of 4) on the demo data. `max_tokens` is now 8000, and a report that does hit the limit says so
+- On Windows, printing a forecast that contains emoji or other non-ASCII text crashed with `UnicodeEncodeError` after the forecast had been generated (and paid for); output is now written as UTF-8
+
+### Changed
+- Forecasts run on **Claude Opus 5.5** (`claude-opus-5-5`) at `low` effort. Opus 5.5 always thinks; measured on the demo data, `low` produced the complete four-section report for about $0.06, about what a complete Opus 4.7 report would cost, while `medium` cost about 25% more for no visible gain
+- The response is read by block type (it now starts with a thinking block); `content[0].text` would have returned the thinking block
+- If Claude declines, the planner retries on a fallback model (`fallbacks: "default"`) and otherwise exits with code 3 and a clear message
+- `anthropic` requirement → `>=2.7.0` (API version `2026-10-21`)
+
+### Added
+- Unit tests for the forecast request and response handling
+
 ## [1.0.2] — 2026-10-12
 ### Fixed
 - Claude Code plugin manifest passes `claude plugin validate`: `repository` is a URL, `license` is MIT and the unsupported `components` field is gone; the invalid `skills` entry (a custom `run` field) is replaced by a real `plan-capacity` skill in `skills/plan-capacity/SKILL.md`
