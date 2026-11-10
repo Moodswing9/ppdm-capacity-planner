@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "ppdm-capacity-planner",
-  "version": "1.0.2",
-  "description": "Claude Opus 4.7 capacity forecasting for Dell EMC PPDM storage systems",
+  "version": "1.1.0",
+  "description": "Claude Opus 5.5 capacity forecasting for Dell EMC PPDM storage systems",
   "author": {
     "name": "Moodswing9",
     "url": "https://github.com/Moodswing9"

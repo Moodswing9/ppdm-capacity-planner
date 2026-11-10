@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-ppdm-capacity-planner — Claude Opus 4.7-powered storage capacity forecasting for PPDM.
+ppdm-capacity-planner — Claude Opus 5.5-powered storage capacity forecasting for PPDM.
 """
-__version__ = "1.0.2"
+__version__ = "1.1.0"
 
 import argparse
 import os
@@ -151,13 +151,31 @@ def build_prompt(systems: list[dict]) -> str:
 # Claude integration
 # ---------------------------------------------------------------------------
 
+# Claude Opus 5.5 always thinks; effort sets how much, and thinking shares
+# max_tokens with the report. Measured on the demo data: at low effort the full
+# four-section report costs about $0.06 (Opus 4.7 at 1024 tokens stopped before
+# the Executive Summary); medium cost ~25% more for no visible gain.
+MODEL = "claude-opus-5-5"
+REQUEST_SETTINGS = {
+    "model": MODEL,
+    "max_tokens": 8000,
+    "output_config": {"effort": "low"},
+    # On a refusal, the API retries on a fallback model.
+    "betas": ["server-side-fallback-2026-07-01"],
+    "fallbacks": "default",
+}
+
+
+class ForecastError(RuntimeError):
+    """Claude returned no usable forecast."""
+
+
 def generate_forecast(systems: list[dict]) -> str:
-    """Call Claude Opus 4.7 and return the forecast narrative."""
+    """Call Claude Opus 5.5 and return the forecast narrative."""
     client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
     prompt = build_prompt(systems)
-    message = client.messages.create(
-        model="claude-opus-4-7",
-        max_tokens=1024,
+    message = client.beta.messages.create(
+        **REQUEST_SETTINGS,
         messages=[
             {
                 "role": "user",
@@ -165,7 +183,13 @@ def generate_forecast(systems: list[dict]) -> str:
             }
         ],
     )
-    return message.content[0].text
+    if message.stop_reason == "refusal":
+        raise ForecastError("Claude declined to produce this forecast.")
+    # Read text blocks by type: the response starts with a thinking block.
+    narrative = "".join(b.text for b in message.content if b.type == "text")
+    if message.stop_reason == "max_tokens":
+        narrative += "\n\n_(Forecast cut off at the length limit.)_"
+    return narrative
 
 
 # ---------------------------------------------------------------------------
@@ -202,7 +226,7 @@ def print_report(systems: list[dict], narrative: str) -> None:
     """Print the full capacity planning report to stdout."""
     separator = "=" * 70
     print(separator)
-    print("  PPDM CAPACITY PLANNING REPORT  —  powered by Claude Opus 4.7")
+    print("  PPDM CAPACITY PLANNING REPORT  —  powered by Claude Opus 5.5")
     print(separator)
     print()
     print("CURRENT STORAGE UTILISATION")
@@ -220,7 +244,7 @@ def print_report(systems: list[dict], narrative: str) -> None:
         print(f"    Used: {s['used_gib']:.1f} GiB  /  Total: {s['total_gib']:.1f} GiB")
         print()
     print(separator)
-    print("FORECAST & RECOMMENDATIONS  (Claude Opus 4.7 Analysis)")
+    print("FORECAST & RECOMMENDATIONS  (Claude Opus 5.5 Analysis)")
     print(separator)
     print()
     print(narrative)
@@ -237,7 +261,7 @@ def print_report(systems: list[dict], narrative: str) -> None:
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(
         prog="planner",
-        description="PPDM storage capacity forecasting via Claude Opus 4.7.",
+        description="PPDM storage capacity forecasting via Claude Opus 5.5.",
     )
     parser.add_argument(
         "--host",
@@ -271,6 +295,12 @@ def parse_args(argv=None):
 
 def main(argv=None) -> int:
     args = parse_args(argv)
+    # Forecasts can contain emoji and other non-ASCII text; a Windows console or
+    # a redirected file defaults to cp1252, where printing them raises
+    # UnicodeEncodeError after the (paid) forecast has already been generated.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
 
     if args.demo:
         print("Running in DEMO mode — no PPDM connection required.")
@@ -301,8 +331,12 @@ def main(argv=None) -> int:
         print("ERROR: No storage systems found.", file=sys.stderr)
         return 2
 
-    print("Generating capacity forecast via Claude Opus 4.7 ...", file=sys.stderr)
-    narrative = generate_forecast(systems)
+    print("Generating capacity forecast via Claude Opus 5.5 ...", file=sys.stderr)
+    try:
+        narrative = generate_forecast(systems)
+    except ForecastError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 3
     print_report(systems, narrative)
     return 0
 

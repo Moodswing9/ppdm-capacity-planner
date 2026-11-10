@@ -2,7 +2,7 @@
 
 # 📈 ppdm-capacity-planner
 
-**AI capacity forecasting for Dell PowerProtect Data Manager (PPDM) storage, powered by Claude Opus 4.7**
+**AI capacity forecasting for Dell PowerProtect Data Manager (PPDM) storage, powered by Claude Opus 5.5**
 
 [![Version](https://img.shields.io/badge/version-1.0.2-6366f1?style=flat-square)](https://github.com/Moodswing9/ppdm-capacity-planner/releases)
 [![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)](LICENSE)
@@ -16,7 +16,7 @@
 
 ## Overview
 
-`ppdm-capacity-planner` reads the current utilisation of every storage system attached to a PPDM server and asks Claude Opus 4.7 to turn that snapshot into a capacity plan:
+`ppdm-capacity-planner` reads the current utilisation of every storage system attached to a PPDM server and asks Claude Opus 5.5 to turn that snapshot into a capacity plan:
 
 - **80% breach projections** — when each storage system is expected to cross the warning threshold
 - **95% breach projections** — the critical threshold, per storage system
@@ -80,7 +80,7 @@ Passing `--pass` on the command line can leave the password in your shell histor
 
 1. **Collect** — logs in to the PPDM REST API, fetches all storage systems, then logs out.
 2. **Normalise** — converts each record to name, total capacity, used capacity and percentage used.
-3. **Forecast** — sends the snapshot to Claude Opus 4.7, which returns the breach projections, recommendations and summary.
+3. **Forecast** — sends the snapshot to Claude Opus 5.5, which returns the breach projections, recommendations and summary.
 4. **Report** — prints utilisation bars followed by the forecast.
 
 Everything lives in a single file, `planner.py`.
